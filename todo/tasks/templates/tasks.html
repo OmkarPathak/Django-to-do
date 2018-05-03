@@ -2,8 +2,25 @@
 {% block content %}
 <div class="row">
     <div class="col"></div>
-    <div class="col" style="padding: 30px;">
-        <button class="btn btn-primary">Test</button>
+    <div class="col text-center" style="padding: 30px;">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-md-3 text-center">
+                    <label for="search">{{ form.title.label }}</label>
+                    {{ form.title }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-md-3 text-center">
+                    <label for="search">{{ form.description.label }}</label>
+                    {{ form.description }}
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
+                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
     </div>
     <div class="col"></div>
 </div>

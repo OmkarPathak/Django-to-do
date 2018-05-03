@@ -18,5 +18,5 @@ from . import views
 
 urlpatterns = [
     path('add/', views.add, name='add_task'),
-    path('', views.test, name='test'),
+    path('', views.homepage, name='homepage'),
 ]
