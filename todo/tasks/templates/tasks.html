@@ -1,40 +1,82 @@
 {% extends 'base.html' %}
 {% load tags %}
+
+{% block title %}Taskकर{% endblock %}
+
 {% block content %}
-<div class="row">
-    {% if form %}
-    <div class="col text-center" style="padding: 30px;">
-        <form method="POST" action="{% url 'homepage' %}">
-            {% csrf_token %}
-            <div class="row">
-                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-md-3 text-center">
-                    <label for="search">{{ form.title.label }}</label>
-                    {{ form.title | add_css:"form-control" }}
-                </div>
+<div class="container text-center" style="padding-top: 20%">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask" style="border-radius: 40px;">
+      + Add a new Task
+    </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addTask" tabindex="-1" role="dialog" aria-labelledby="addTaskTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+            {% if form %}
+            <div class="col text-center" style="padding: 30px;">
+                <form method="POST" action="{% url 'homepage' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col text-center">
+                            {{ form.title | add_css:"form-control" }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col text-center">
+                            {{ form.description | add_css:"form-control" }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ form.priority | add_css:"form-control" }}
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="row">
-                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-md-3 text-center">
-                    <label for="search">{{ form.description.label }}</label>
-                    {{ form.description | add_css:"form-control" }}
-                </div>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-                <button type="submit" id="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
+            {% endif %}
+        </div>
+      </div>
     </div>
-    {% endif %}
+  </div>
+</div>
+
+<div class="row" style="margin-top: 30px;">
+    <div class="col-lg-3 col-md-3"></div>
+    <div class="col-lg-6 col-md-6">
+        {% for task in tasks %}
+            <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
+                <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;" class="{{ task.priority }}">{{ task.title }}</a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="col-lg-2 col-md-2"></div>
 </div>
 
 <div class="row">
-    <div class="col"></div>
-    <div class="col text-center">
+    <div class="col-lg-3 col-md-3"></div>
+    <div class="col-lg-6 col-md-6">
         {% for task in tasks %}
-            <h4>ID: {{ task.pk }}</h4>
-            <h4>Title: {{ task.title }}</h4>
-            <h4>Desc: {{ task.description }}</h4>
+            {% if task.description %}
+                <div class="collapse" id="{{ task.pk }}">
+                  <div class="card card-body" style="border-radius: 0;">
+                    {{ task.description }}
+                  </div>
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
-    <div class="col"></div>
 </div>
 {% endblock %}

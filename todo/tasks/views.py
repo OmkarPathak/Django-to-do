@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import TaskForm, Task
 
 # Create your views here.
@@ -18,3 +18,7 @@ def homepage(request):
 
 def add(request):
     return render(request, 'tasks.html')
+
+def delete(request, id):
+    Task.objects.filter(pk=id).delete()
+    return redirect('/tasks/')

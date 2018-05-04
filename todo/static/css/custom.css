@@ -1,0 +1,31 @@
+.danger{
+    color: #dc3545; /* red */
+}
+
+.warning{
+    color: #ffc107; /* orange */
+}
+
+.success{
+    color: #28a745; /* green */
+}
+
+.primary{
+    color: #007bff; /* blue */
+}
+
+.danger:hover{
+    color: #dc3545; /* red */
+}
+
+.warning:hover{
+    color: #ffc107; /* orange */
+}
+
+.success:hover{
+    color: #28a745; /* green */
+}
+
+.primary:hover{
+    color: #007bff; /* blue */
+}
