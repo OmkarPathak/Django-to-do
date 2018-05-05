@@ -3,10 +3,10 @@ from django.forms import ModelForm
 from django import forms
 
 PRIORITIES = (
-        ('danger', 'Priority 1'),
-        ('warning', 'Priority 2'),
-        ('success', 'Priority 3'),
-        ('primary', 'Priority 4')
+        ('adanger', 'Priority 1'),
+        ('bwarning', 'Priority 2'),
+        ('csuccess', 'Priority 3'),
+        ('dprimary', 'Priority 4')
     )
 
 # Create your models here.
@@ -25,7 +25,8 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         fields = '__all__'
+        exclude = ['complete', 'date_of_creation']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': "What's on your mind today?"}),
-            'description': forms.Textarea(attrs={'placeholder': "Describe your note?", 'cols': 80, 'rows': 3}),
+            'description': forms.Textarea(attrs={'placeholder': "Describe your note ..", 'cols': 80, 'rows': 3}),
         }

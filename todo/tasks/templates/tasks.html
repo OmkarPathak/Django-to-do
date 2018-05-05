@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
 {% load tags %}
+{% load static %}
 
 {% block title %}Taskकर{% endblock %}
 
 {% block content %}
-<div class="container text-center" style="padding-top: 20%">
+<div class="container text-center">
+    <img src="{% static 'images/dexter.gif' %}" height="300px" alt="dexter">
+
+    <div style="padding-top: 10px;"></div>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask" style="border-radius: 40px;">
       + Add a new Task
@@ -58,8 +62,17 @@
     <div class="col-lg-6 col-md-6">
         {% for task in tasks %}
             <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
-                <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;" class="{{ task.priority }}">{{ task.title }} {{task.complete}}</a>
-                <a href="{% url 'completed_task' task.pk %}"><button>C</button></a>
+                <div class="row">
+                    <div class="col">
+                        <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group float-right" role="group">
+                            <a href="{% url 'completed_task' task.pk %}" class="float-right">&#10004;</a>
+                            <a href="{% url 'delete_task' task.pk %}" class="float-right">&#10007;</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
@@ -79,5 +92,9 @@
             {% endif %}
         {% endfor %}
     </div>
+</div>
+
+<div class="text-center" style="padding-top: 20px;">
+    Made with &#x2615; and &#9829; by <strong><a href="https://www.github.com/OmkarPathak">Omkar</a></strong> & <strong><a href="https://www.github.com/chinya07">Chinmay</a></strong>
 </div>
 {% endblock %}
