@@ -58,7 +58,8 @@
     <div class="col-lg-6 col-md-6">
         {% for task in tasks %}
             <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
-                <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;" class="{{ task.priority }}">{{ task.title }}</a>
+                <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;" class="{{ task.priority }}">{{ task.title }} {{task.complete}}</a>
+                <a href="{% url 'completed_task' task.pk %}"><button>C</button></a>
             </div>
         {% endfor %}
     </div>

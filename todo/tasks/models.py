@@ -19,6 +19,7 @@ class Task(models.Model):
                     choices=PRIORITIES,
                     default=PRIORITIES[0][0]
                 )
+    complete = models.IntegerField(default=0)
 
 class TaskForm(ModelForm):
     class Meta:

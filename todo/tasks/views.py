@@ -22,3 +22,10 @@ def add(request):
 def delete(request, id):
     Task.objects.filter(pk=id).delete()
     return redirect('/tasks/')
+
+
+def complete(request, id):
+	task=Task.objects.get(pk=id)
+	task.complete = 1
+	task.save()
+	return redirect('/tasks/') 
