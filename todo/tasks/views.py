@@ -9,8 +9,8 @@ def tasks(request):
         return redirect(reverse('username'))
     try:
         user = Username.objects.get(username=request.COOKIES['username'])
-    except KeyError:
-        return redirect(reverse('username'))
+    except (KeyError, Username.DoesNotExist):
+        return redirect(reverse('clear_username'))
     if request.method == 'POST':
         # this is wehere POST request is accessed
         form = TaskForm(request.POST)
