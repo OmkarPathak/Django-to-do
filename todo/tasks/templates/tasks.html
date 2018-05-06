@@ -132,13 +132,13 @@
             {% for task in tasks %}
                 <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-9">
                             <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
                         </div>
-                        <div class="col">
+                        <div class="col-3">
                             <div class="btn-group float-right" role="group">
                                 <a href="{% url 'completed_task' task.pk %}" class="float-right" data-toggle="tooltip" title="{% if task.complete %} Mark as Incomplete {% else %} Mark as Complete {% endif %}">&#10004;</a>
-                                <a href="{% url 'delete_task' task.pk %}" class="float-right" style="padding-left: 10px;"  data-toggle="tooltip" title="Delete">&#10007;</a>
+                                <a href="{% url 'delete_task' task.pk %}" class="float-right" style="padding-left: 10px;" data-toggle="tooltip" title="Delete">&#10007;</a>
                             </div>
                         </div>
                     </div>
@@ -159,7 +159,6 @@
                             <div class="col">
                                 {{ task.description }}
                             </div>
-                            <div class="col">{{ task.date_of_creation }}</div>
                         </div>
                       </div>
                     </div>
@@ -169,11 +168,11 @@
     </div>
 
     <div class="text-center" style="padding-top: 20px;">
-        Made with &#x2615; and &#9829; by <strong><a href="https://www.github.com/OmkarPathak">Omkar</a></strong> & <strong><a href="https://www.github.com/chinya07">Chinmay</a></strong>
+        Made with &#x2615; and &#9829; by <strong><a href="https://www.github.com/OmkarPathak" target="_blank">Omkar</a></strong> & <strong><a href="https://www.github.com/chinya07" target="_blank">Chinmay</a></strong>
 
         <br>
 
-        We use &#x1f36a; for giving you the best experience
+        We use &#x1f36a; for the best experience
 
         <br>
 
@@ -184,12 +183,12 @@
 
 {% block javascript %}
     <script>
-    $(window).on('load', function(){
-        $('#username').modal('show');
-    });
+        $(window).on('load', function(){
+            $('#username').modal('show');
+        });
 
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 {% endblock %}

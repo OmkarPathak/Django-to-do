@@ -19,7 +19,7 @@ def tasks(request):
             temp.username = user
             temp.save()
         tasks = Task.objects.filter(username=user).order_by('priority')
-        return render(request, 'tasks.html', {'form': form, 'tasks': tasks})
+        return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
     else:
         # this is where GET request are accessed
         form = TaskForm()
