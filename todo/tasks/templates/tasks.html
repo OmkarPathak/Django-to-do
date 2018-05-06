@@ -5,96 +5,183 @@
 {% block title %}Taskकर{% endblock %}
 
 {% block content %}
-<div class="container text-center">
-    <img src="{% static 'images/dexter.gif' %}" height="300px" alt="dexter">
-
-    <div style="padding-top: 10px;"></div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask" style="border-radius: 40px;">
-      + Add a new Task
-    </button>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="addTask" tabindex="-1" role="dialog" aria-labelledby="addTaskTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="row">
-            {% if form %}
-            <div class="col text-center" style="padding: 30px;">
-                <form method="POST" action="{% url 'homepage' %}">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="form-group col text-center">
-                            {{ form.title | add_css:"form-control" }}
+    {% if username_form %}
+    <!-- Username Modal -->
+    <div class="modal fade" id="username" tabindex="-1" role="dialog" aria-labelledby="addTaskTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            {% if username_form.errors %}
+                {% for field in username_form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            {{ error|escape }}
                         </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in username_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
                     </div>
-                    <div class="row">
-                        <div class="form-group col text-center">
-                            {{ form.description | add_css:"form-control" }}
+                {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col text-center">
+                    <form method="POST" action="{% url 'username' %}">
+                        {% csrf_token %}
+                        <div class="row text-center">
+                            <div class="form-group col">
+                                {{ username_form.username | add_css:"form-control" }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            {{ form.priority | add_css:"form-control" }}
-                        </div>
-                        <div class="col">
-                        </div>
-                        <div class="col">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <div class="row text-center">
+                            <div class="col text-center">
                                 <button type="submit" class="btn btn-primary">Add</button>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-            {% endif %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+    {% endif %}
 
-<div class="row" style="margin-top: 30px;">
-    <div class="col-lg-3 col-md-3"></div>
-    <div class="col-lg-6 col-md-6">
-        {% for task in tasks %}
-            <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
-                <div class="row">
-                    <div class="col">
-                        <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
-                    </div>
-                    <div class="col">
-                        <div class="btn-group float-right" role="group">
-                            <a href="{% url 'completed_task' task.pk %}" class="float-right">&#10004;</a>
-                            <a href="{% url 'delete_task' task.pk %}" class="float-right">&#10007;</a>
-                        </div>
+    <div class="container text-center">
+        <div class="row text-center">
+            <div class="col">
+                <img src="{% static 'images/dexter.gif' %}" height="300px" alt="dexter">
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col">
+                <div style="padding-top: 10px;">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask" style="border-radius: 40px;">
+                      + Add a new Task
+                    </button>
+
+                    <div style="padding-top: 10px; padding-bottom: 0;">
+                        {% if user %}
+                            Welcome, {{ user.username }}
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        {% endfor %}
+        </div>
     </div>
-    <div class="col-lg-2 col-md-2"></div>
-</div>
 
-<div class="row">
-    <div class="col-lg-3 col-md-3"></div>
-    <div class="col-lg-6 col-md-6">
-        {% for task in tasks %}
-            {% if task.description %}
-                <div class="collapse" id="{{ task.pk }}">
-                  <div class="card card-body" style="border-radius: 0;">
-                    {{ task.description }}
-                  </div>
+    <!-- Add note Modal -->
+    <div class="modal fade" id="addTask" tabindex="-1" role="dialog" aria-labelledby="addTaskTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="row">
+                {% if form %}
+                {% for field in username_form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in username_form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+                <div class="col text-center" style="padding: 30px;">
+                    <form method="POST" action="{% url 'tasks' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="form-group col text-center">
+                                {{ form.title | add_css:"form-control" }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col text-center">
+                                {{ form.description | add_css:"form-control" }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                {{ form.priority | add_css:"form-control" }}
+                            </div>
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            {% endif %}
-        {% endfor %}
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-<div class="text-center" style="padding-top: 20px;">
-    Made with &#x2615; and &#9829; by <strong><a href="https://www.github.com/OmkarPathak">Omkar</a></strong> & <strong><a href="https://www.github.com/chinya07">Chinmay</a></strong>
-</div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-3 col-md-3"></div>
+        <div class="col-lg-6 col-md-6">
+            {% for task in tasks %}
+                <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
+                    <div class="row">
+                        <div class="col">
+                            <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
+                        </div>
+                        <div class="col">
+                            <div class="btn-group float-right" role="group">
+                                <a href="{% url 'completed_task' task.pk %}" class="float-right" data-toggle="tooltip" title="{% if task.complete %} Mark as Incomplete {% else %} Mark as Complete {% endif %}">&#10004;</a>
+                                <a href="{% url 'delete_task' task.pk %}" class="float-right" style="padding-left: 10px;"  data-toggle="tooltip" title="Delete">&#10007;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-2 col-md-2"></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-3"></div>
+        <div class="col-lg-6 col-md-6">
+            {% for task in tasks %}
+                {% if task.description %}
+                    <div class="collapse" id="{{ task.pk }}">
+                      <div class="card card-body" style="border-radius: 0;">
+                        <div class="row">
+                            <div class="col">
+                                {{ task.description }}
+                            </div>
+                            <div class="col">{{ task.date_of_creation }}</div>
+                        </div>
+                      </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="text-center" style="padding-top: 20px;">
+        Made with &#x2615; and &#9829; by <strong><a href="https://www.github.com/OmkarPathak">Omkar</a></strong> & <strong><a href="https://www.github.com/chinya07">Chinmay</a></strong>
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+    <script>
+    $(window).on('load', function(){
+        $('#username').modal('show');
+    });
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
 {% endblock %}

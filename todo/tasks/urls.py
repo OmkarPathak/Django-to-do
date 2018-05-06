@@ -17,8 +17,7 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('add/', views.add, name='add_task'),
     path('delete/<int:id>/', views.delete, name='delete_task'),
     path('complete/<int:id>/', views.complete, name='completed_task'),
-    path('', views.homepage, name='homepage'),
+    path('', views.tasks, name='tasks'),
 ]
