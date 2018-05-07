@@ -132,6 +132,18 @@
                     <div class="row">
                         <div class="col-9">
                             <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
+
+                            {% if task.description %}
+                                <div class="collapse" id="{{ task.pk }}">
+                                  <div class="" style="border-radius: 0;">
+                                    <div class="row">
+                                        <div class="col">
+                                            {{ task.description }}
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="col-3">
                             <div class="btn-group float-right" role="group">
@@ -144,25 +156,6 @@
             {% endfor %}
         </div>
         <div class="col-lg-2 col-md-2"></div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-3 col-md-3"></div>
-        <div class="col-lg-6 col-md-6">
-            {% for task in tasks %}
-                {% if task.description %}
-                    <div class="collapse" id="{{ task.pk }}">
-                      <div class="card card-body" style="border-radius: 0;">
-                        <div class="row">
-                            <div class="col">
-                                {{ task.description }}
-                            </div>
-                        </div>
-                      </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
     </div>
 
     <div class="text-center" style="padding-top: 20px;">
