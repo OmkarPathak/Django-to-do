@@ -12,6 +12,9 @@ PRIORITIES = (
 class Username(models.Model):
     username = models.CharField(max_length=50, unique=True)
 
+    def __str__(self):
+        return self.username
+
 class Task(models.Model):
     id = models.AutoField(primary_key=True)
     username = models.ForeignKey(Username, on_delete=models.CASCADE)
