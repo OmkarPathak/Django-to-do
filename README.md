@@ -3,6 +3,10 @@ A dead simple Django ToDo Web App
 
 This is a sample project that a novice django developer can use to get started.
 
+## Working
+
+![Django to do](results/django-to-do.gif)
+
 ## Features
 
 - Dead simple
