@@ -6,9 +6,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Facebook Cards -->
+    <meta property="og:description" content="A dead simple Django ToDo Web App"/>
+    <meta property="og:url" content=""/>
+    <meta property="og:image" content="{% static 'images/dexter.gif' %}"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:site_name" content="Tasker"/>
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@omkarpathak27">
+    <meta name="twitter:creator" content="Omkar Pathak">
+    <meta name="twitter:title" content= "Tasker">
+    <meta name="twitter:description" content="A dead simple Django ToDo Web App">
+    <meta name="twitter:creator" content="Omkar Pathak, Chinmaya Kaundanya>
+    <meta name="twitter:image:src" content="{% static 'images/dexter.gif' %}"/>
+    <meta name="twitter:domain" content="https://www.omkarpathak.in">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    <link rel="shortcut icon" href="{% static 'images/tasker.png' %}">
 
     <title>{% block title %}{% endblock %}</title>
   </head>
