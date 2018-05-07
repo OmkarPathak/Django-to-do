@@ -23,7 +23,8 @@ def tasks(request):
             username.username = unique_id
             username.save()
             response = redirect(reverse('tasks'))
-            response.set_cookie('username', username)
+            # 604800s = 1 week
+            response.set_cookie('username', username, max_age=604800)
             return response
         # this is where GET request are accessed
         form = TaskForm()
