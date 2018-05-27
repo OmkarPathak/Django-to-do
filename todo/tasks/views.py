@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, reverse, render_to_response
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse
 from .models import TaskForm, Task, UsernameForm, Username
 from django.template import RequestContext
 
 # Create your views here.
+
 def tasks(request):
     if request.method == 'POST':
         # this is wehere POST request is accessed
@@ -32,18 +33,44 @@ def tasks(request):
         user = Username.objects.filter(username=request.COOKIES.get('username'))
     return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
 
+def check_user_validity(request):
+    '''
+    Check if user such user exists in Database 
+    '''
+   
+    try:
+        
+        
+       
+        return Username.objects.get(username__exact=request.COOKIES["username"])
+    except Exception:
+       
+        return False
+
 def delete(request, id):
-    Task.objects.filter(id=id).delete()
-    return redirect(reverse('tasks'))
+    if 'username' in request.COOKIES and check_user_validity(request):
+        #now check if user trying to access this task actually created this task
+        Task.objects.filter(id=id,username=Username.objects.get(username__exact=request.COOKIES["username"])).delete()
+        return redirect(reverse('tasks'))
+    else:
+        return HttpResponse("You are not allowed to access this resource")
 
 def complete(request, id):
-    task=Task.objects.get(id=id)
-    if task.complete:
-       task.complete = 0
+    if 'username' in request.COOKIES and check_user_validity(request):
+        try:
+            task=Task.objects.get(id=id,username=Username.objects.get(username__exact=request.COOKIES["username"]))
+            if task.complete:
+                task.complete = 0
+            else:
+                task.complete = 1
+            task.save()
+            return redirect('/')
+        except Exception:
+            return HttpResponse("Sorry You are not allowed to access This task ")
     else:
-        task.complete = 1
-    task.save()
-    return redirect('/')
+        return HttpRespons("You are not allowed to access this resource")
+
+
 
 def clear(request):
     Username.objects.filter(username=request.COOKIES['username']).delete()
