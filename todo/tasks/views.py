@@ -8,12 +8,13 @@ from django.template import RequestContext
 def tasks(request):
     if request.method == 'POST':
         # this is wehere POST request is accessed
-        form = TaskForm(request.POST)
+        form = TaskForm(request.POST or None)
         if form.is_valid():
             user = Username.objects.get(username=request.COOKIES.get('username'))
             temp = form.save(commit=False)
             temp.username = user
             temp.save()
+            form = TaskForm()
         tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
         return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
     else:
@@ -39,12 +40,8 @@ def check_user_validity(request):
     '''
    
     try:
-        
-        
-       
         return Username.objects.get(username__exact=request.COOKIES["username"])
     except Exception:
-       
         return False
 
 def delete(request, id):
@@ -68,7 +65,7 @@ def complete(request, id):
         except Exception:
             return HttpResponse("Sorry You are not allowed to access This task ")
     else:
-        return HttpRespons("You are not allowed to access this resource")
+        return HttpResponse("You are not allowed to access this resource")
 
 
 
