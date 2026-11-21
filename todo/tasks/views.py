@@ -1,16 +1,19 @@
-from django.shortcuts import render, redirect, reverse, render_to_response
-from django.http import HttpResponseRedirect,HttpResponse
-from .models import TaskForm, Task, UsernameForm, Username
-from django.template import RequestContext
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponse
+from .models import TaskForm, Task, Username
 
 # Create your views here.
 
 def tasks(request):
     if request.method == 'POST':
         # this is wehere POST request is accessed
+        user = Username.objects.filter(username=request.COOKIES.get('username')).first()
+        if user is None:
+            # sem cookie valido: volta para o GET, que cria um usuario novo
+            return redirect(reverse('tasks'))
         form = TaskForm(request.POST or None)
         if form.is_valid():
-            user = Username.objects.get(username=request.COOKIES.get('username'))
             temp = form.save(commit=False)
             temp.username = user
             temp.save()

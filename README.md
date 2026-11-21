@@ -16,19 +16,30 @@ This is a sample project that a novice django developer can use to get started.
 
 ## Setup
 
+Requer **Python 3.10+** (o projeto foi migrado do Django 2.0 para o **Django 5.2 LTS**).
+
 - Download the files from this repo
 - Change the directory to the folder where you downloaded files
-- For installing required packages, execute the following command in terminal:
+- Create a virtual environment and install the required packages:
 
     ```bash
-    $pip install -r requirements.txt
+    python -m venv .venv
+    .venv\Scripts\activate        # Windows  (Linux/macOS: source .venv/bin/activate)
+    pip install -r requirements.txt
     ```
 
 - After successful installation execute the following commands:
 
     ```bash
-    $python manage.py migrate
-    $python manage.py runserver
+    cd todo
+    python manage.py migrate
+    python manage.py runserver
+    ```
+
+- Run the automated tests:
+
+    ```bash
+    python manage.py test tasks
     ```
 
 - Visit `127.0.0.1:8000` in your browser to enjoy the awesome app!
