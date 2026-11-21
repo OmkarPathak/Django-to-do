@@ -4,15 +4,16 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/python
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+  vmImage: 'ubuntu-latest'
 strategy:
   matrix:
-    Python35:
-      PYTHON_VERSION: '3.5'
-    Python36:
-      PYTHON_VERSION: '3.6'
-    Python37:
-      PYTHON_VERSION: '3.7'
+    # Django 5.2 LTS suporta Python 3.10 a 3.13
+    Python310:
+      PYTHON_VERSION: '3.10'
+    Python312:
+      PYTHON_VERSION: '3.12'
+    Python313:
+      PYTHON_VERSION: '3.13'
   maxParallel: 3
 
 steps:
