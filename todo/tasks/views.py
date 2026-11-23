@@ -18,7 +18,7 @@ def tasks(request):
             temp.username = user
             temp.save()
             form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('complete', 'priority')
         return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
     else:
         if 'username' not in request.COOKIES:
@@ -33,7 +33,7 @@ def tasks(request):
             return response
         # this is where GET request are accessed
         form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('complete', 'priority')
         user = Username.objects.filter(username=request.COOKIES.get('username'))
     return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
 
