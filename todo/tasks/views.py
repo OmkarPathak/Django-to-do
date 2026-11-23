@@ -44,8 +44,10 @@ def check_user_validity(request):
    
     try:
         return Username.objects.get(username__exact=request.COOKIES["username"])
-    except Exception:
+    except (Username.DoesNotExist, KeyError):
         return False
+    except Exception as exc:
+        raise RuntimeError("An error occurred while looking up the user.") from exc
 
 def delete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
@@ -59,10 +61,7 @@ def complete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
         try:
             task=Task.objects.get(id=id,username=Username.objects.get(username__exact=request.COOKIES["username"]))
-            if task.complete:
-                task.complete = 0
-            else:
-                task.complete = 1
+            task.complete = not task.complete
             task.save()
             return redirect('/')
         except Exception:
