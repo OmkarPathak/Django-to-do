@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 *.sqlite3
 .venv/
+coverage.xml
+.coverage
+TEST-*.xml

@@ -1,4 +1,7 @@
 # Django-to-do
+
+[![CI](https://github.com/jvpaim/Django-to-do/actions/workflows/ci.yml/badge.svg)](https://github.com/jvpaim/Django-to-do/actions/workflows/ci.yml)
+[![Release](https://github.com/jvpaim/Django-to-do/actions/workflows/release.yml/badge.svg)](https://github.com/jvpaim/Django-to-do/actions/workflows/release.yml)
 A dead simple Django ToDo Web App
 
 This is a sample project that a novice django developer can use to get started.
@@ -43,6 +46,40 @@ Requer **Python 3.10+** (o projeto foi migrado do Django 2.0 para o **Django 5.2
     ```
 
 - Visit `127.0.0.1:8000` in your browser to enjoy the awesome app!
+
+## CI e releases
+
+O projeto usa GitHub Actions (`.github/workflows/`):
+
+| Workflow | Quando roda | O que faz |
+|---|---|---|
+| `ci.yml` | push na `master`, PRs | lint (ruff), `manage.py check`, verificação de migrações pendentes, testes em Python 3.10–3.13 com cobertura (mínimo 80%), auditoria de vulnerabilidades (`pip-audit`) |
+| `pr-title.yml` | PRs | exige título no padrão [Conventional Commits](https://www.conventionalcommits.org/pt-br/) |
+| `release.yml` | push na `master` | [release-please](https://github.com/googleapis/release-please): mantém um PR de release com `CHANGELOG.md` e versão nova; ao fazer merge dele cria a tag `vX.Y.Z`, o GitHub Release e anexa o código empacotado |
+
+O Dependabot (`.github/dependabot.yml`) abre PRs de atualização de dependências e das actions.
+
+### Versionamento
+
+As versões seguem [SemVer](https://semver.org/lang/pt-BR/) e são calculadas a partir das mensagens de commit:
+
+- `fix: ...` → patch (1.0.0 → 1.0.1)
+- `feat: ...` → minor (1.0.0 → 1.1.0)
+- `feat!: ...` ou rodapé `BREAKING CHANGE:` → major (1.0.0 → 2.0.0)
+- `docs:`, `test:`, `ci:`, `chore:`, `refactor:` → não geram release sozinhos
+
+A versão atual fica em `pyproject.toml` e `.release-please-manifest.json`; não edite à mão.
+
+### Rodando as verificações localmente
+
+```bash
+pip install -r requirements-dev.txt
+ruff check .
+cd todo
+python manage.py makemigrations --check --dry-run
+coverage run --rcfile=../pyproject.toml manage.py test
+coverage report --rcfile=../pyproject.toml
+```
 
 Built with ♥ by [`Omkar Pathak`](http://www.omkarpathak.in/)
 

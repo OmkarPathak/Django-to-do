@@ -1,0 +1,31 @@
+name: PR title
+
+# O título do PR vira a mensagem do squash-merge, que o release-please usa
+# para decidir a próxima versão e montar o CHANGELOG.
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  conventional-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            perf
+            refactor
+            deps
+            docs
+            test
+            ci
+            build
+            chore
+            revert
