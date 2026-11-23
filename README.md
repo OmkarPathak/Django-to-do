@@ -28,6 +28,17 @@ Requer **Python 3.10+** (o projeto foi migrado do Django 2.0 para o **Django 5.2
     pip install -r requirements.txt
     ```
 
+- Create the local environment file and generate a new secret key:
+
+    ```powershell
+    Copy-Item .env.example .env
+    python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+    ```
+
+    Replace `DJANGO_SECRET_KEY` in `.env` with the generated value. Keep
+    `DJANGO_DEBUG=True` only for local development. The `.env` file must never
+    be committed.
+
 - After successful installation execute the following commands:
 
     ```bash
