@@ -29,3 +29,28 @@
 .dprimary:hover{
     color: #007bff; /* blue */
 }
+
+.task-priority {
+    position: relative;
+}
+
+.task-priority::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 6px;
+}
+
+.task-priority.adanger::before {
+    background-color: #dc3545;
+}
+
+.task-priority.bwarning::before {
+    background-color: #ffc107;
+}
+
+.task-priority.csuccess::before {
+    background-color: #28a745;
+}
