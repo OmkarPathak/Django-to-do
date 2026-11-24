@@ -40,6 +40,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements*.txt
       - run: pip install -r ../requirements.txt
+      - name: Gerar chave secreta temporária
+        run: echo "DJANGO_SECRET_KEY=$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')" >> "$GITHUB_ENV"
       - name: System checks
         run: python manage.py check --fail-level WARNING
       - name: Migrações pendentes
@@ -66,6 +68,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements*.txt
       - run: pip install -r ../requirements-dev.txt
+      - name: Gerar chave secreta temporária
+        run: echo "DJANGO_SECRET_KEY=$(python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())')" >> "$GITHUB_ENV"
       - name: Rodar testes com cobertura
         run: |
           coverage run --rcfile=../pyproject.toml manage.py test --noinput \

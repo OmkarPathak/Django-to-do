@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.http import require_POST
 
 from .models import Task, TaskForm, Username
 
@@ -48,6 +49,7 @@ def check_user_validity(request):
     except Exception:
         return False
 
+@require_POST
 def delete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
         #now check if user trying to access this task actually created this task
@@ -73,8 +75,11 @@ def complete(request, id):
 
 
 
+@require_POST
 def clear(request):
-    Username.objects.filter(username=request.COOKIES['username']).delete()
+    username = request.COOKIES.get('username')
+    if username:
+        Username.objects.filter(username=username).delete()
     response = HttpResponseRedirect('/tasks/')
     response.delete_cookie('username')
     return response
