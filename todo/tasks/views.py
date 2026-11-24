@@ -20,7 +20,7 @@ def tasks(request):
             temp.username = user
             temp.save()
             form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('complete', 'priority')
         return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
     else:
         if 'username' not in request.COOKIES:
@@ -35,7 +35,7 @@ def tasks(request):
             return response
         # this is where GET request are accessed
         form = TaskForm()
-        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('priority')
+        tasks = Task.objects.filter(username__username=request.COOKIES.get('username')).order_by('complete', 'priority')
         user = Username.objects.filter(username=request.COOKIES.get('username'))
     return render(request, 'tasks.html', {'form': form, 'tasks': tasks, 'user': user})
 
@@ -46,8 +46,10 @@ def check_user_validity(request):
 
     try:
         return Username.objects.get(username__exact=request.COOKIES["username"])
-    except Exception:
+    except (Username.DoesNotExist, KeyError):
         return False
+    except Exception as exc:
+        raise RuntimeError("An error occurred while looking up the user.") from exc
 
 @require_POST
 def delete(request, id):
@@ -62,10 +64,7 @@ def complete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
         try:
             task=Task.objects.get(id=id,username=Username.objects.get(username__exact=request.COOKIES["username"]))
-            if task.complete:
-                task.complete = 0
-            else:
-                task.complete = 1
+            task.complete = not task.complete
             task.save()
             return redirect('/')
         except Exception:
