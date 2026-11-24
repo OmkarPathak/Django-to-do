@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_POST
-from .models import TaskForm, Task, Username
+
+from .models import Task, TaskForm, Username
 
 # Create your views here.
 
@@ -40,9 +41,9 @@ def tasks(request):
 
 def check_user_validity(request):
     '''
-    Check if user such user exists in Database 
+    Check if user such user exists in Database
     '''
-   
+
     try:
         return Username.objects.get(username__exact=request.COOKIES["username"])
     except Exception:
