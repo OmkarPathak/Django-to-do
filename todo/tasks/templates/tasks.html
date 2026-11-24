@@ -78,32 +78,38 @@
     <div class="row" style="margin-top: 10px;">
         <div class="col-lg-3 col-md-3"></div>
         <div class="col-lg-6 col-md-6">
-            {% for task in tasks %}
-                <div class="card btn-block" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa">
-                    <div class="row">
-                        <div class="col-9">
-                            <a href="" data-toggle="collapse" data-target="#{{ task.pk }}" style="text-decoration: none;{% if task.complete %}text-decoration:line-through{% endif %}" class="{{ task.priority }}">{{ task.title }}</a>
+            {% regroup tasks by complete as task_groups %}
+            {% for group in task_groups %}
+                {% if group.grouper %}
+                    <p class="text-muted small" style="margin-top: 25px; margin-bottom: 5px;color: #000000;">Completed</p>
+                {% endif %}
+                {% for task in group.list %}
+                    <div class="card btn-block task-priority {{ task.priority }}" style="margin-top: 10px; border-radius: 0px; padding: 10px; background-color: #fafafa" href="" data-toggle="collapse" data-target="#{{ task.pk }}">
+                        <div class="row">
+                            <div class="col-9" >
+                                <a class="task-title" style="margin-left: 15px;{% if task.complete %}text-decoration: line-through;{% endif %}">{{ task.title }}</a>
 
-                            {% if task.description %}
-                                <div class="collapse" id="{{ task.pk }}">
-                                  <div class="" style="border-radius: 0;">
-                                    <div class="row">
-                                        <div class="col">
-                                            {{ task.description }}
+                                {% if task.description %}
+                                    <div class="collapse" id="{{ task.pk }}">
+                                      <div class="task-description" style="border-radius: 0;">
+                                        <div class="row">
+                                            <div class="col" style="margin-left: 15px;">
+                                                {{ task.description }}
+                                             </div>
                                         </div>
+                                      </div>
                                     </div>
-                                  </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-3">
+                                <div class="btn-group float-right" role="group">
+                                    <a href="{% url 'completed_task' task.pk %}" class="float-right" data-toggle="tooltip" title="{% if task.complete %} Mark as Incomplete {% else %} Mark as Complete {% endif %}">&#10004;</a>
+                                    <a href="{% url 'delete_task' task.pk %}" class="float-right" style="padding-left: 10px; color: red" data-toggle="tooltip" title="Delete">&#10007;</a>
                                 </div>
-                            {% endif %}
-                        </div>
-                        <div class="col-3">
-                            <div class="btn-group float-right" role="group">
-                                <a href="{% url 'completed_task' task.pk %}" class="float-right" data-toggle="tooltip" title="{% if task.complete %} Mark as Incomplete {% else %} Mark as Complete {% endif %}">&#10004;</a>
-                                <a href="{% url 'delete_task' task.pk %}" class="float-right" style="padding-left: 10px;" data-toggle="tooltip" title="Delete">&#10007;</a>
                             </div>
                         </div>
                     </div>
-                </div>
+                {% endfor %}
             {% endfor %}
         </div>
         <div class="col-lg-2 col-md-2"></div>

@@ -1,0 +1,25 @@
+[project]
+name = "django-to-do"
+version = "1.0.0"
+description = "A dead simple Django ToDo Web App"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+extend-exclude = ["todo/tasks/migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.coverage.run]
+source = ["tasks"]
+branch = true
+omit = ["*/migrations/*", "*/tests.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 80

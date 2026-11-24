@@ -1,6 +1,6 @@
+from django import forms
 from django.db import models
 from django.forms import ModelForm
-from django import forms
 
 PRIORITIES = (
         ('adanger', 'Priority High'),
@@ -26,7 +26,7 @@ class Task(models.Model):
                     choices=PRIORITIES,
                     default=PRIORITIES[0][0]
                 )
-    complete = models.IntegerField(default=0)
+    complete = models.BooleanField(default=False)
 
 class TaskForm(ModelForm):
     class Meta:
