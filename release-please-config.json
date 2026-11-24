@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "9d5f692",
+  "packages": {
+    ".": {
+      "release-type": "python",
+      "package-name": "django-to-do",
+      "changelog-path": "CHANGELOG.md",
+      "include-v-in-tag": true,
+      "changelog-sections": [
+        { "type": "feat", "section": "Novidades" },
+        { "type": "fix", "section": "Correções" },
+        { "type": "perf", "section": "Desempenho" },
+        { "type": "refactor", "section": "Refatoração" },
+        { "type": "deps", "section": "Dependências" },
+        { "type": "docs", "section": "Documentação" },
+        { "type": "test", "section": "Testes", "hidden": true },
+        { "type": "ci", "section": "CI", "hidden": true },
+        { "type": "build", "section": "Build", "hidden": true },
+        { "type": "chore", "section": "Manutenção", "hidden": true }
+      ]
+    }
+  }
+}
