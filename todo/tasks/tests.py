@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 
 from .models import Task, Username
@@ -60,20 +60,44 @@ class TaskFlowTests(TestCase):
     def test_delete_task(self):
         user = self._login()
         task = Task.objects.create(username=user, title='t')
-        self.client.get(reverse('delete_task', args=[task.id]))
+        self.client.post(reverse('delete_task', args=[task.id]))
         self.assertFalse(Task.objects.filter(id=task.id).exists())
+
+    def test_delete_task_rejects_get(self):
+        user = self._login()
+        task = Task.objects.create(username=user, title='t')
+        response = self.client.get(reverse('delete_task', args=[task.id]))
+        self.assertEqual(response.status_code, 405)
+        self.assertTrue(Task.objects.filter(id=task.id).exists())
+
+    def test_delete_task_requires_csrf_token(self):
+        user = self._login()
+        task = Task.objects.create(username=user, title='t')
+        csrf_client = Client(enforce_csrf_checks=True)
+        csrf_client.cookies['username'] = user.username
+        response = csrf_client.post(reverse('delete_task', args=[task.id]))
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(Task.objects.filter(id=task.id).exists())
 
     def test_cannot_touch_other_users_task(self):
         other = Username.objects.create(username='outro')
         task = Task.objects.create(username=other, title='alheia')
         self._login()
-        self.client.get(reverse('delete_task', args=[task.id]))
+        self.client.post(reverse('delete_task', args=[task.id]))
         self.assertTrue(Task.objects.filter(id=task.id).exists())
 
     def test_clear_removes_user_and_tasks(self):
         user = self._login()
         Task.objects.create(username=user, title='t')
-        response = self.client.get(reverse('clear_username'))
+        response = self.client.post(reverse('clear_username'))
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Username.objects.filter(id=user.id).exists())
         self.assertEqual(Task.objects.count(), 0)
+
+    def test_clear_without_cookie_does_not_crash(self):
+        response = self.client.post(reverse('clear_username'))
+        self.assertEqual(response.status_code, 302)
+
+    def test_clear_rejects_get(self):
+        response = self.client.get(reverse('clear_username'))
+        self.assertEqual(response.status_code, 405)

@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from .models import Task, Username
+
 
 # Register your models here.
 class MyModelAdmin(admin.ModelAdmin):

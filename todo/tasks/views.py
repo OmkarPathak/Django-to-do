@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.http import HttpResponseRedirect, HttpResponse
-from .models import TaskForm, Task, Username
+from django.views.decorators.http import require_POST
+
+from .models import Task, TaskForm, Username
 
 # Create your views here.
 
@@ -39,9 +41,9 @@ def tasks(request):
 
 def check_user_validity(request):
     '''
-    Check if user such user exists in Database 
+    Check if user such user exists in Database
     '''
-   
+
     try:
         return Username.objects.get(username__exact=request.COOKIES["username"])
     except (Username.DoesNotExist, KeyError):
@@ -49,6 +51,7 @@ def check_user_validity(request):
     except Exception as exc:
         raise RuntimeError("An error occurred while looking up the user.") from exc
 
+@require_POST
 def delete(request, id):
     if 'username' in request.COOKIES and check_user_validity(request):
         #now check if user trying to access this task actually created this task
@@ -71,8 +74,11 @@ def complete(request, id):
 
 
 
+@require_POST
 def clear(request):
-    Username.objects.filter(username=request.COOKIES['username']).delete()
+    username = request.COOKIES.get('username')
+    if username:
+        Username.objects.filter(username=username).delete()
     response = HttpResponseRedirect('/tasks/')
     response.delete_cookie('username')
     return response

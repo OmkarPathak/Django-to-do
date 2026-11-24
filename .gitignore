@@ -1,5 +1,9 @@
+.env
 __pycache__/
-*.pyc
+*.py[cod]
 *.sqlite3
 .venv/
 graphify-out
+coverage.xml
+.coverage
+TEST-*.xml
